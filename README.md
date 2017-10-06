@@ -3,7 +3,7 @@
 [![Dependency Status](https://img.shields.io/david/eddyystop/dataloader-align-results.svg?style=flat-square)](https://david-dm.org/eddyystop/dataloader-align-results)
 [![Download Status](https://img.shields.io/npm/dm/dataloader-align-results.svg?style=flat-square)](https://www.npmjs.com/package/dataloader-align-results)
 
-> Align your back-end service results with the keys DataLoader provided to the batch loading function.
+> Takes your back-end results and returns an Array acceptable to DataLoader.
 
 ## Installation
 

@@ -1,6 +1,6 @@
 {
   "name": "dataloader-align-results",
-  "description": "Align your back-end service results with the keys DataLoader provided to the batch loading function.",
+  "description": "Takes your back-end results and returns an Array acceptable to DataLoader.",
   "version": "0.0.1",
   "homepage": "https://github.com/eddyystop/dataloader-align-results",
   "main": "lib/",
