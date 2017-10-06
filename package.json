@@ -1,7 +1,7 @@
 {
   "name": "dataloader-align-results",
   "description": "Takes your back-end results and returns an Array acceptable to DataLoader.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/eddyystop/dataloader-align-results",
   "main": "lib/",
   "keywords": [
