@@ -8,8 +8,6 @@
 
 > Align your back-end service results with the keys DataLoader provided to the batch loading function.
 
-| **Work in progress. Do not use.**
-
 ## Installation
 
 ```
@@ -22,16 +20,20 @@ To uphold the constraints of the DataLoader batch function, e.g. `new DataLoader
 the batch function must return an Array of values the same length as the Array of keys,
 and re-order them to ensure each index aligns with the original keys.
 
-This utility takes the results provided by the back-end service and returns an Array acceptable to DataLoader.
+The back-end service typically returns results in a different order than we requested,
+likely because it was more efficient for it to do so.
+Also, it typically omits a result for some keys when no value exists for that key.
+
+This utility takes such results and returns an Array acceptable to DataLoader.
 
 `dataLoaderAlignResults({ graphqlType, serializeDataLoaderKey, serializeRecordKey, onError });`
 
-- `grapgqlType` (string)- Type of GraphQL result to return for each DataLoader key
-    - '[!]!' - required collection of required elements
-    - '[!]'  - optional collection of required elements
-    - '[]'   - optional collection of optional elements
-    - '!'    - required object
-    - ''     - optional object
+- `grapgqlType` (string) - Type of GraphQL result to return for each DataLoader key
+    - '[!]!' - An array of non-null objects.
+    - '[!]'  - An array of non-null objects, ori `null`.
+    - '[]'   - An array of elements each of which is either an object or `null`.
+    - '!'    - A non-null object.
+    - ''     - An object or `null`.
 - `serializeDataLoaderKey` (optional, function(key)) - Function to serialize a key passed from DataLoader.
     - A non-trivial serialization function should more efficiently be passed to DataLoader,
     e.g. `new DataLoader(dataLoaderAlignResults, { cacheKeyFn: serializeDataLoaderKey })`,
@@ -52,14 +54,6 @@ as its first parameter.
     - Results are likely in a different order than that of `keys`,
     likely because it was more efficient for it to do so.
     - A result may be omitted for some keys, which we can interpret as no value existing for that key.
-    
-- returns an array in 1:1 correspondence with the array of keys provided by DataLoader.
-The possible values of each element depend on `grapgqlType`:
-    - '[!]!' - An array of non-null objects.
-    - '[!]'  - An array of non-null objects, ori `null`.
-    - '[]'   - An array of elements each of which is either an object or `null`.
-    - '!'    - A non-null object.
-    - ''     - An object or `null`.
 
 ## Complete Example
 
