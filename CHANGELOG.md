@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.1.0](https://github.com/eddyystop/dataloader-align-results/tree/v0.1.0) (2017-10-06)
+[Full Changelog](https://github.com/eddyystop/dataloader-align-results/compare/v0.0.1...v0.1.0)
+
 ## [v0.0.1](https://github.com/eddyystop/dataloader-align-results/tree/v0.0.1) (2017-10-06)
 
 
