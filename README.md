@@ -42,7 +42,7 @@ This utility takes such back-end results and returns an Array acceptable to Data
 - `onError` (optional, function(msg, detail)) - Handler for terminal errors.
     - Errors are ignored if onError is not provided.
     
-dataLoaderAlignResults returns a `function(resultsArray, keys)` which should be passed to DataLoader
+dataLoaderAlignResults returns a `function(keys, resultsArray)` which should be passed to DataLoader
 as its first parameter.
 
 - `keys` - The keys passed from the DataLoader.
