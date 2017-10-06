@@ -27,16 +27,21 @@ const DataLoader = require('dataloader');
 const dataloaderAlignResults = require('dataloader-align-results');
  
 const userLoader = new DataLoader(keys => myBatchGetUsers(keys));
-const userBatchAligner = dataloaderAlignResults( ... );
+const userAlignResults = dataloaderAlignResults(/* ... */);
  
-userLoader.load(3);
-userLoader.load(2);
-userLoader.load(4);
-userLoader.load(1);
+// These logical reads will be resolved with one call to the back-end service.
+Promise.all([
+  userLoader.load(3),
+  userLoader.load(2),
+  userLoader.load(4),
+  userLoader.load(1),
+])
+  .then(resolvedResults => { /* ... */ });
+
  
 function myBatchGetUsers(keys) {
-  return callMyBackendService(keys) // Returns array of objects in any order for these keys.
-    .then(resultsArray => userBatchAligner(resultsArray,keys));
+  return callBatchGetUsers(keys) // Returns an array of objects, in any order, for these keys.
+    .then(resultsArray => userAlignResults(resultsArray, keys));
 }
 ```
 
