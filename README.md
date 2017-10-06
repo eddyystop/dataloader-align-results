@@ -21,39 +21,37 @@ the batch function must return an Array of values the same length as the Array o
 and re-order them to ensure each index aligns with the original keys.
 
 The back-end service typically returns results in a different order than we requested,
-likely because it was more efficient for it to do so.
-Also, it typically omits a result for some keys when no value exists for that key.
+and it typically omits a result for some keys when no value exists for that key.
 
-This utility takes such results and returns an Array acceptable to DataLoader.
+This utility takes such back-end results and returns an Array acceptable to DataLoader.
 
 `dataLoaderAlignResults({ graphqlType, serializeDataLoaderKey, serializeRecordKey, onError });`
 
 - `grapgqlType` (string) - Type of GraphQL result to return for each DataLoader key
     - '[!]!' - An array of non-null objects.
-    - '[!]'  - An array of non-null objects, ori `null`.
-    - '[]'   - An array of elements each of which is either an object or `null`.
+    - '[!]'  - An array of non-null objects, or `null`.
+    - '[]'   - An array of elements each of which is either an object or `null`. The array may be empty.
     - '!'    - A non-null object.
     - ''     - An object or `null`.
 - `serializeDataLoaderKey` (optional, function(key)) - Function to serialize a key passed from DataLoader.
     - A non-trivial serialization function should more efficiently be passed to DataLoader,
-    e.g. `new DataLoader(dataLoaderAlignResults, { cacheKeyFn: serializeDataLoaderKey })`,
+    e.g. `new DataLoader(keys => {/* ... */}, { cacheKeyFn: serializeDataLoaderKey })`,
     than to dataLoaderAlignResults.
     - Defaults to the trivial `key => key.toString()`.
 - `serializeRecordKey` (optional, function(record) or string) - Function to serialize key from the record.
-    - The resulting value must strictly equal that produced by `serializeDataLoaderKey`,
+    - The resulting value must be strictly equal to that produced by serializeDataLoaderKey,
     or passed by DataLoader.
     - If a string is provided, `record => record[serializeRecordKey].toString()` is used.
 - `onError` (optional, function(msg, detail)) - Handler for terminal errors.
-    - Errors are ignored if `onError` is not provided.
+    - Errors are ignored if onError is not provided.
     
-`dataLoaderAlignResults` returns a `function(resultsArray, keys)` which is passed to DataLoader
+dataLoaderAlignResults returns a `function(resultsArray, keys)` which should be passed to DataLoader
 as its first parameter.
 
 - `keys` - The keys passed from the DataLoader.
 - `resultsArray` - Result from back-end service after processing the `keys`.
-    - Results are likely in a different order than that of `keys`,
-    likely because it was more efficient for it to do so.
-    - A result may be omitted for some keys, which we can interpret as no value existing for that key.
+    - Results are likely in a different order than that of `keys`.
+    - A result may be omitted for some keys.
 
 ## Complete Example
 
@@ -76,7 +74,7 @@ Promise.all([
 
  
 function myBatchGetUsers(keys) {
-  return callBatchGetUsers(keys) // Returns an array of objects, in any order, for these keys.
+  return callBatchGetUsers(keys) // Call back-end service.
     .then(resultsArray => userAlignResults(resultsArray, keys));
 }
 ```
