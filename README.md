@@ -27,7 +27,8 @@ This utility takes such back-end results and returns an Array acceptable to Data
 - `grapgqlType` (string) - Type of GraphQL result to return for each DataLoader key
     - '[!]!' - An array of non-null objects.
     - '[!]'  - An array of non-null objects, or `null`.
-    - '[]'   - An array of elements each of which is either an object or `null`. The array may be empty.
+    - '[]!'  - Null, else an array of elements each of which is either an object or `null`.
+    - '[]'   - An array of elements each of which is either an object or `null`.
     - '!'    - A non-null object.
     - ''     - An object or `null`.
 - `serializeDataLoaderKey` (optional, function(key)) - Function to serialize a key passed from DataLoader.
@@ -49,6 +50,10 @@ as its first parameter.
 - `resultsArray` - Result from back-end service after processing the `keys`.
     - Results are likely in a different order than that of `keys`.
     - A result may be omitted for some keys.
+
+The batch loader function calls onError if it finds results incompatible with graphqlType.
+However it cannot check for a `null` final result for '[]!' or '[!]!' because DataLoader itself
+builds the final Array from elements returned by the batch loader plus elements from the cache. 
 
 ## Complete Example
 
