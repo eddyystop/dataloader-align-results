@@ -42,6 +42,11 @@ This utility takes such back-end results and returns an Array acceptable to Data
     - If a string is provided, `record => record[serializeRecordKey].toString()` is used.
 - `onError` (optional, function(msg, detail)) - Handler for terminal errors.
     - Errors are ignored if onError is not provided.
+- `isStrict` (optional, boolean) - It may be more convenient at times to return `[]`
+for a missing key rather than `null`,
+as the `null` may require special processing in the calling code.
+    - `true` - Return `null`.
+    - else - Return `[]`.
     
 dataLoaderAlignResults returns a `function(keys, resultsArray)` which should be passed to DataLoader
 as its first parameter.
